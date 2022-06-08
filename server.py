@@ -94,7 +94,7 @@ def msg_handle(connectionSocket, addr, forbiddenlist):
         if request.get('If-Modified-Since', "-1") != "-1":
 
             datetime_if_modified_since = datetime.datetime.strptime(request['If-Modified-Since'], "%a, %d %b %Y %H:%M:%S")
-            if( datetime_last_modified-datetime_if_modified_since).seconds <= 0:
+            if(datetime_last_modified-datetime_if_modified_since).seconds <= 0:
                 print("set flag flase")
                 sendfileflag = False
                 not_modified_304_msg = "HTTP/1.1 304 Not Modified \r\n"
@@ -105,11 +105,10 @@ def msg_handle(connectionSocket, addr, forbiddenlist):
 
         #实现200状态码
         if sendfileflag:
-            f = open(filename, encoding='utf-8')
+            f = open(filename)
             outputdata = f.readlines()
             OK_200_msg = "HTTP/1.1 200 OK \r\n"
-            charset = "Content-Type: text/plain;charset=utf-8\r\n"
-            finalmsg = OK_200_msg + timemsg + charset +"\r\n"
+            finalmsg = OK_200_msg + timemsg +"\r\n"
             connectionSocket.send(finalmsg.encode())
             # Send the content of the requsted file to the Client
             for i in range(0, len(outputdata)):
